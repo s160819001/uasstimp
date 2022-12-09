@@ -18,6 +18,7 @@ class Register extends Component {
     }
 
     create = async (username, password) => {
+        if(password == this.state.repassword){
         const options = {
             method: 'POST',
             headers: new Headers({
@@ -25,11 +26,11 @@ class Register extends Component {
             }),
             body: "user_id=" + username + "&user_password=" + password
         };
-
+        
         const response = await fetch('https://ubaya.fun/react/160819001/register.php',
             options);
         const json = await response.json();
-        if(password == this.repassword){
+        
             if (json.result == 'success') {
                 try {
                     // await AsyncStorage.setItem('namadepan', json.namadepan);

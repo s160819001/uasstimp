@@ -5,30 +5,55 @@ import style from "../assets/style";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { FlatList } from "react-native-gesture-handler";
 
-class Home extends Component {
-    constructor(props) {
-        super(props);
+class Home extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            tes:"Menunggu API",
+            data:[],
+        }
+        this.fetchData();
     }
-    render() {
-        return (
-            <View style={style.container}>
-                <ScrollView style={style.container}>
+    fetchData = () => {
+         try {
+          fetch('https://ubaya.fun/react/160819001/get_memes.php')
+           .then(response => response.json())
+           .then(resjson =>{
+            this.setState(
+             this.state = {
+                 tes:resjson.result,
+            //   tes:resjson.data[0].url,
+                 data:resjson.data
+             })
+           });
+         } catch (error) {
+          console.log(error);
+         }
+        }
+
+        showdata(data){
+            return <FlatList
+            data={data}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({item}) => (
+                <View>
                     <Card containerStyle={style.card}>
                         <View style={{
                             position: 'relative'
                         }}>
-                            <Text style={style.text_atas}>Text ATAS</Text>
+                            <Text style={style.text_atas}>{item.teksatas}</Text>
                             <Image
                                 containerStyle={{
                                     aspectRatio: 1,
                                 }}
                                 source={{
                                     uri:
-                                        'https://picsum.photos/1080/1080',
+                                        item.url,
                                 }}
                             />
-                            <Text style={style.text_bawah}>Text BAWAH</Text>
+                            <Text style={style.text_bawah}>{item.teksbawah}</Text>
                         </View>
                         <View style={{
                             marginTop: 5,
@@ -52,7 +77,7 @@ class Home extends Component {
                                 alignSelf: 'center',
                                 fontSize: 16,
                                 color: '#fff'
-                            }}>200 likes</Text>
+                            }}>{item.numoflike} likes</Text>
                             <Button
                                 icon={
                                     <Ionicons
@@ -71,8 +96,16 @@ class Home extends Component {
                             />
                         </View>
                     </Card>
-                </ScrollView>
-                <FAB
+
+            </View>
+            )}
+            />
+        }
+    render() {
+        return <View style={style.container}>
+            <ScrollView style={style.container}>
+            {this.showdata(this.state.data)}
+            <FAB
                     icon="plus"
                     style={style.fab}
                     mode='elevated'
@@ -80,8 +113,8 @@ class Home extends Component {
                         const { navigation } = this.props;
                         navigation.navigate("Create Your Meme")
                     }} />
-            </View>
-        )
+            </ScrollView>
+        </View>
     }
 }
 
