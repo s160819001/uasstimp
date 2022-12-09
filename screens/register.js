@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, NativeModules, Image,TextInput } from "react-native";
+import { View, NativeModules, Image, TextInput } from "react-native";
 import { Input, Button, Text } from '@rneui/base';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -12,25 +12,25 @@ class Register extends Component {
         this.state = {
             username: '',
             password: '',
-            repassword:'',
+            repassword: '',
         };
 
     }
 
     create = async (username, password) => {
-        if(password == this.state.repassword){
-        const options = {
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }),
-            body: "user_id=" + username + "&user_password=" + password
-        };
-        
-        const response = await fetch('https://ubaya.fun/react/160819001/register.php',
-            options);
-        const json = await response.json();
-        
+        if (password == this.state.repassword) {
+            const options = {
+                method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }),
+                body: "user_id=" + username + "&user_password=" + password
+            };
+
+            const response = await fetch('https://ubaya.fun/react/160819001/register.php',
+                options);
+            const json = await response.json();
+
             if (json.result == 'success') {
                 try {
                     // await AsyncStorage.setItem('namadepan', json.namadepan);
@@ -44,7 +44,7 @@ class Register extends Component {
                 alert('Username atau Password salah')
             }
         }
-        else{
+        else {
             alert('password salah');
         }
 
@@ -63,7 +63,7 @@ class Register extends Component {
                         fontSize: 28,
                         fontWeight: 'bold',
                         color: '#265e80',
-                        marginTop:10,
+                        marginTop: 10,
                         alignSelf: 'center',
                     }} >
                         Daily Meme Digest

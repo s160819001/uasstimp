@@ -21,6 +21,7 @@ import MyCreation from './screens/mycreation';
 import Leaderboard from './screens/leaderboard';
 import Settings from './screens/settings';
 import NewMeme from './screens/newmeme';
+import Detail from './screens/detail';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -47,7 +48,7 @@ export default class App extends Component {
 
   cekLogin = async () => {
     try {
-      const value = await AsyncStorage.getItem('namadepan');
+      const value = await AsyncStorage.getItem('username');
       global.activeuser = value;
       console.debug(value);
       //  alert(value);
@@ -294,9 +295,9 @@ function NavMeme() {
     <Stack.Navigator>
       <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
       <Stack.Screen name="Create Your Meme" component={NewMeme} />
+      <Stack.Screen name="Meme Detail" component={Detail}/>
     </Stack.Navigator>
   );
 }
-
 
 

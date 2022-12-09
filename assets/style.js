@@ -12,9 +12,9 @@ export default StyleSheet.create({
         alignSelf: 'center',
     },
     text_body: {
-        fontSize: 18,
-        color: '#265e80',
-        margin: 10,
+        fontSize: 14,
+        color: '#ffffff',
+        marginTop: 5,
     },
     btn_style: {
         borderRadius: 8,
@@ -57,12 +57,12 @@ export default StyleSheet.create({
         fontSize: 24,
     },
     text_score: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: 'bold',
         color: '#265e80',
-        marginTop: 30,
-        textAlign: 'right',
-        marginRight: 10,
+        marginTop: 5,
+        textAlign: 'left',
+        marginLeft: 20,
     },
     slider_container: {
         marginHorizontal: 20,
@@ -83,9 +83,9 @@ export default StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: '#fff',
-        textShadowColor:'#000',
-        textShadowOffset:{width:2, height:2},
-        textShadowRadius:2,
+        textShadowColor: '#000',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 2,
         position: 'absolute',
         zIndex: 1,
         alignSelf: 'center',
@@ -95,9 +95,9 @@ export default StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: '#fff',
-        textShadowColor:'#000',
-        textShadowOffset:{width:2, height:2},
-        textShadowRadius:2,
+        textShadowColor: '#000',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 2,
         position: 'absolute',
         zIndex: 1,
         alignSelf: 'center',
@@ -118,11 +118,11 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 5,
     },
-    listitem:{
-        width:'90%',
-        backgroundColor:'#f1dd96',
-        alignSelf:'center',
-        borderBottomColor:'#000',
-        borderBottomWidth:1
+    listitem: {
+        width: '90%',
+        backgroundColor: '#f1dd96',
+        alignSelf: 'center',
+        borderBottomColor: '#000',
+        borderBottomWidth: 1
     }
 });

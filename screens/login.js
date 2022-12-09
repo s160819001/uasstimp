@@ -32,8 +32,8 @@ class Login extends Component {
 
     if (json.result == 'success') {
       try {
-        await AsyncStorage.setItem('namadepan', json.namadepan);
-        await AsyncStorage.setItem('namabelakang', json.namabelakang);
+        await AsyncStorage.setItem('username', json.username);
+        // await AsyncStorage.setItem('namabelakang', json.namabelakang);
         alert('Login Sukses');
         NativeModules.DevSettings.reload();
       } catch (e) {
