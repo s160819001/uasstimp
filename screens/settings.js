@@ -4,68 +4,124 @@ import React, { Component } from "react";
 import { FAB } from 'react-native-paper';
 import style from "../assets/style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FlatList } from "react-native-gesture-handler";
 
-class Settings extends Component {
+
+class Settings extends React.Component {
+
     constructor(props) {
         super(props);
+        this.state = {
+            tes: "Menunggu API",
+            data: [],
+            user_id: global.activeuser,
+            private:0,
+            check:false
+        }
+        this.fetchData();
     }
-
+    dateformatter(d) {
+        var date = new Date(d);
+        var formateddate = date.toLocaleString("en-GB", { month: 'long', year: 'numeric', hour12: false });
+        return formateddate;
+    }
+    fetchData = () => {
+        const options = {
+            method: 'POST',
+            headers: new Headers({
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }),
+            body: "user_id=" + this.state.user_id
+        };
+        try {
+            fetch('https://ubaya.fun/react/160819001/getuser.php', options)
+                .then(response => response.json())
+                .then(resjson => {
+                    this.setState(
+                        this.state = {
+                            // tes: resjson.result,
+                            //   tes:resjson.data[0].privasi,
+                            data: resjson.data,
+                            // tes: this.state.data.privasi
+                        })
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    showdata(data){
+        
+            return <FlatList
+            data={data}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) =>
+            (
+                    <View>
+                    <Avatar containerStyle={{
+                        alignSelf: 'center',
+                        marginVertical: 20
+                    }} rounded size={'xlarge'} source={{ uri: item.avatar }} />
+                    <Text style={style.text_judul}>
+                        {item.namadepan} {item.namabelakang}
+                    </Text>
+                    <Text style={{
+                        alignSelf: 'center',
+                        fontSize: 16,
+                        fontWeight: "bold",
+                        color: '#265e80',
+                    }}>
+                        Active since {this.dateformatter(item.tgldaftar)}
+                    </Text>
+                    <Text style={{
+                        alignSelf: 'center',
+                        fontSize: 16,
+                        fontWeight: '300',
+                        color: '#265e80',
+                        marginVertical: 10
+                    }}>
+                        {item.username}
+                    </Text>
+                    <View style={{
+                        flex: 1,
+                        backgroundColor: '#f1dd96',
+                        padding: 10,
+                    }}>
+                        <Text style={style.text_body}>First Name</Text>
+                        <TextInput
+                            style={style.input}
+                            placeholder={item.namadepan}
+                        />
+                        <Text style={style.text_body}>Last Name</Text>
+                        <TextInput
+                            style={style.input}
+                            placeholder={item.namabelakang}
+                        />
+                        
+                        <CheckBox
+                            title="Hide My Name"
+                            containerStyle={{
+                                backgroundColor: 'rgba(0,0,0,0)',
+                            }}
+                        />
+                        <Button
+                            onPress={this._onPressButton}
+                            title="Save Changes"
+                            buttonStyle={style.btn_style}
+                            containerStyle={{ bottom: 30, position: 'absolute', width: '100%', alignSelf: 'center' }}
+                        />
+                    </View>
+                    </View>
+            
+            )}
+            />
+        
+    }
     render() {
+    
         return (
             <View style={style.container}>
-                <Avatar containerStyle={{
-                    alignSelf: 'center',
-                    marginVertical: 20
-                }} rounded size={'xlarge'} source={{ uri: 'http://placekitten.com/1080/1080' }} />
-                <Text style={style.text_judul}>
-                    David Kurniawan
-                </Text>
-                <Text style={{
-                    alignSelf: 'center',
-                    fontSize: 16,
-                    fontWeight: "bold",
-                    color: '#265e80',
-                }}>
-                    Active since Dec 2022
-                </Text>
-                <Text style={{
-                    alignSelf: 'center',
-                    fontSize: 16,
-                    fontWeight: '300',
-                    color: '#265e80',
-                    marginVertical: 10
-                }}>
-                    dk
-                </Text>
-                <View style={{
-                    flex: 1,
-                    backgroundColor: '#f1dd96',
-                    padding: 10,
-                }}>
-                    <Text style={style.text_body}>First Name</Text>
-                    <TextInput
-                        style={style.input}
-                        placeholder="Your First Name"
-                    />
-                    <Text style={style.text_body}>Last Name</Text>
-                    <TextInput
-                        style={style.input}
-                        placeholder="Your Last Name"
-                    />
-                    <CheckBox
-                        title="Hide My Name"
-                        checked
-                        containerStyle={{
-                            backgroundColor: 'rgba(0,0,0,0)',
-                        }}
-                    />
-                    <Button
-                        onPress={this._onPressButton}
-                        title="Save Changes"
-                        buttonStyle={style.btn_style}
-                        containerStyle={{ bottom: 30, position: 'absolute', width: '100%', alignSelf: 'center' }}
-                    />
-                </View>
+                {/* {this.state.data['avatar']} */}
+                {this.showdata(this.state.data)}
                 <FAB
                     icon="logout"
                     style={{

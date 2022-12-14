@@ -43,128 +43,13 @@ class Detail extends React.Component {
                             //   tes:resjson.data[0].teksatas,
                             data: resjson.data,
                             is_fetch:true
+                            
                         })
                 });
         } catch (error) {
             console.log(error);
         }
     }
-
-    // showdata(data) {
-    //     return <FlatList
-    //         data={data}
-    //         keyExtractor={(item) => item.id.toString()}
-    //         renderItem={({ item }) =>
-    //         (
-    //             <Card containerStyle={style.card}>
-    //                 <View style={{
-    //                     position: 'relative'
-    //                 }}>
-    //                     <Text style={style.text_atas}>{item.teksatas}</Text>
-    //                     <Image
-    //                         containerStyle={{
-    //                             aspectRatio: 1,
-    //                         }}
-    //                         source={{
-    //                             uri:
-    //                                 item.url,
-    //                         }}
-    //                     />
-    //                     <Text style={style.text_bawah}>{item.teksbawah}</Text>
-    //                 </View>
-    //                 <View>
-    //                     <View>
-    //                         <Text style={style.text_body}>{
-    //                             this.dateformatter(item.tglbuat)}</Text>
-    //                     </View>
-    //                     <View style={{
-    //                         marginTop: 5,
-    //                         position: 'relative',
-    //                         flexDirection: 'row'
-    //                     }}>
-    //                         <Ionicons
-    //                             name="heart"
-    //                             size={30}
-    //                             color="white"
-    //                         />
-    //                         <Text style={{
-    //                             alignSelf: 'center',
-    //                             left: 5,
-    //                             fontSize: 16,
-    //                             color: '#fff'
-    //                         }}> {item.numoflike} likes</Text>
-    //                         <Text style={{
-    //                             alignSelf: 'center',
-    //                             fontSize: 16,
-    //                             right: 35,
-    //                             marginLeft: 'auto',
-    //                             color: '#fff'
-    //                         }}>{item.banyakcomment} comments</Text>
-    //                     </View>
-    //                 </View>
-    //             <ScrollView>
-    //                 <Card containerStyle={style.card}>
-    //                     <View style={{
-    //                         position: 'relative',
-    //                         flexDirection: 'row'
-    //                     }}>
-    //                         <Text style={{
-    //                             fontSize: 14,
-    //                             color: '#ffffff',
-    //                             // margin: 10,
-    //                             fontWeight: 'bold'
-    //                         }}>David Kurniawan</Text>
-    //                         <Text style={{
-    //                             alignSelf: 'center',
-    //                             fontSize: 14,
-    //                             right: 0,
-    //                             marginLeft: 'auto',
-    //                             color: '#fff'
-    //                         }}>31 Des 22</Text>
-    //                     </View>
-    //                     <Text style={style.text_body}>Isi komentar di sini.</Text>
-    //                 </Card>
-    //             </ScrollView>
-    //             <View style={{
-    //                 position: 'relative',
-    //                 flexDirection: 'row'
-    //             }}>
-    //                 <TextInput
-    //                     style={{
-    //                         borderColor: '#fff',
-    //                         height: 40,
-    //                         borderWidth: 1,
-    //                         padding: 10,
-    //                         backgroundColor: '#fff',
-    //                         borderRadius: 5,
-    //                         width:'90%'
-    //                     }}
-    //                     // onChangeText={(Overview) => this.setState({ Overview })}
-    //                     // value={this.state.Overview}
-    //                     placeholder="Write Comments"
-    //                     multiline={true} numberOfLines={4} />
-    //                 <Button
-    //                     icon={
-    //                         <Ionicons
-    //                             name="send"
-    //                             size={25}
-    //                             color="#595855"
-    //                         />
-    //                     }
-    //                     buttonStyle={{
-    //                         backgroundColor: 'rgba(0,0,0,0)'
-    //                     }}
-    //                     containerStyle={{
-    //                         position: 'absolute',
-    //                         right: 0
-    //                     }}
-    //                 />
-    //             </View>
-
-    //             </Card>
-    //         )}
-    //     />
-    // }
     render() {
         if(!this.state.is_fetch){
             this.state.id = this.props.route.params.idmeme;

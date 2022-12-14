@@ -32,19 +32,58 @@ export default class App extends Component {
     super(props);
     this.state = {
       islogin: false
+      ,namadepan: "",
+      namabelakang:"",
+      avatar:"",
+      data: [],
+      user_id:'',
     }
+
     global.giveup = false;
     global.confirmgiveup = false;
 
     this.cekLogin().then((item) => {
       if (item != null) {
+        console.log(item)
         this.setState(
           this.state = {
-            islogin: true
+            islogin: true,
+            user_id:item
           });
+          this.fetchData()
       }
     });
+    
   }
+
+
+  fetchData = () => {
+    const options = {
+        method: 'POST',
+        headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+        body: "user_id=" + this.state.user_id
+    };
+    try {
+        fetch('https://ubaya.fun/react/160819001/getuser.php', options)
+            .then(response => response.json())
+            .then(resjson => {
+                this.setState(
+                    this.state = {
+                        // tes: resjson.result,
+                          namadepan:resjson.data[0].namadepan,
+                          namabelakang:resjson.data[0].namabelakang,
+                          avatar:resjson.data[0].avatar,
+                        data: resjson.data,
+                        
+                        // tes: this.state.data.privasi
+                    })
+            });
+    } catch (error) {
+        console.log(error);
+    }
+}
 
   cekLogin = async () => {
     try {
@@ -59,7 +98,6 @@ export default class App extends Component {
       // error reading value
     }
   }
-
 
   TabNav() {
     return (
@@ -96,11 +134,25 @@ export default class App extends Component {
     global.confirmgiveup = false;
   }
 
+  getnamadepan(){
+    return this.state.namadepan
+    // console.log(global.namadepan)
+  }
 
+  getnamabelakang(){
+    return this.state.namabelakang
+    // console.log(global.namadepan)
+  }
+  getavatar(){
+    return this.state.avatar
+    // console.log(global.namadepan)
+  }
 
   render() {
     if (!this.state.islogin) {
+      
       return (
+        
         <NavigationContainer><Stack.Navigator>
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="Create Account" component={Register}
@@ -114,49 +166,13 @@ export default class App extends Component {
         </Stack.Navigator>
         </NavigationContainer>);
     } else {
-      return (
+         {global.namadepan = this.getnamadepan()}
+         {global.namabelakang = this.getnamabelakang()}
+         {global.avatar = this.getavatar()}
+      return  (
+        
         <NavigationContainer>
-          {/* <Stack.Navigator>
-            <Stack.Screen
-              name="Home"
-              component={this.DrawerNav}
-              options={{
-                title: 'Color Mixer',
-                headerShown: false,
-                headerStyle: {
-                  backgroundColor: '#917f54',
-                }
-              }} />
-            <Stack.Screen
-              name="ColorMixer"
-              component={ColorMixer}
-              options={{
-                title: 'Color Mixer',
-                headerLeft: (props) => (
-                  <HeaderBackButton
-                    {...props}
-                    onPress={() => {
-                      Alert.alert(
-                        "Warning",
-                        "Are you sure you want to give up?",
-                        [
-                          {
-                            text: "Cancel",
-                            onPress: () => this.cancelgiveup(),
-                            style: "cancel"
-                          },
-                          { text: "OK", onPress: () => this.giveup() }
-                        ]
-                      );
-                      global.confirmgiveup = true;
-                    }}
-                  />),
-                headerStyle: {
-                  backgroundColor: '#917f54',
-                },
-                headerTintColor: '#fff',
-              }} />
-          </Stack.Navigator> */}
+          {/* {console.log(this.state.data)} */}
           <Drawer.Navigator initialRouteName=" "
             screenOptions={({ route }) => ({
               drawerIcon: ({ focused }) => {
@@ -170,7 +186,9 @@ export default class App extends Component {
               tabBarActiveTintColor: 'blue',
               tabBarInactiveTintColor: 'gray',
             })}
-            drawerContent={props => <CustomDrawerContent {...props} />}>
+            drawerContent={props => <CustomDrawerContent {...props} />}
+              >
+            
             <Drawer.Screen name="Home"
               component={this.TabNav}
 
@@ -257,16 +275,16 @@ function CustomDrawerContent(props) {
             blurRadius={20}
             source={{
               uri:
-                'https://picsum.photos/2048/2048',
+                global.avatar,
             }}
           />
 
           <Text style={style.text_drawer_header}>
-            <Avatar rounded size={'large'} source={{ uri: 'http://placekitten.com/300/300' }} />{'\n'}
+            <Avatar rounded size={'large'} source={{ uri: global.avatar }} />{'\n'}
             <Text style={{
               fontSize: 16,
               fontWeight: '300',
-            }}>dk</Text>{'\n'}
+            }}>{global.namadepan} {global.namabelakang}</Text>{'\n'}
             {global.activeuser}{'\n'}
 
           </Text>

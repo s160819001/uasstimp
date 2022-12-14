@@ -113,6 +113,10 @@ class MyCreation extends React.Component {
                                     right: -10,
                                     alignSelf: 'center',
                                 }}
+                                onPress={() => {
+                                    const { navigation } = this.props;
+                                    navigation.navigate("Meme Detail",{idmeme:item.id})
+                                }}
                             />
                         </View>
                     </View>
@@ -130,5 +134,7 @@ class MyCreation extends React.Component {
         )
     }
 }
-
-export default MyCreation;
+export default function (props) {
+    const navigation = useNavigation();
+    return <MyCreation {...props} navigation={navigation} />;
+};
