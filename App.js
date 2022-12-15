@@ -37,6 +37,7 @@ export default class App extends Component {
       avatar:"",
       data: [],
       user_id:'',
+      id:0
     }
 
     global.giveup = false;
@@ -75,6 +76,7 @@ export default class App extends Component {
                           namadepan:resjson.data[0].namadepan,
                           namabelakang:resjson.data[0].namabelakang,
                           avatar:resjson.data[0].avatar,
+                          id:resjson.data[0].id,
                         data: resjson.data,
                         
                         // tes: this.state.data.privasi
@@ -147,6 +149,10 @@ export default class App extends Component {
     return this.state.avatar
     // console.log(global.namadepan)
   }
+  getid(){
+    return this.state.id
+    // console.log(global.namadepan)
+  }
 
   render() {
     if (!this.state.islogin) {
@@ -169,6 +175,7 @@ export default class App extends Component {
          {global.namadepan = this.getnamadepan()}
          {global.namabelakang = this.getnamabelakang()}
          {global.avatar = this.getavatar()}
+         {global.id = this.getid()}
       return  (
         
         <NavigationContainer>
