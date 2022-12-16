@@ -3,7 +3,6 @@ import { Text, Button, Card, Icon, Image, } from '@rneui/base';
 import React, { Component } from "react";
 import style from "../assets/style";
 import ValidationComponent from 'react-native-form-validator';
-
 export default class NewMeme extends ValidationComponent {
     constructor(props) {
         super(props);
@@ -30,6 +29,8 @@ export default class NewMeme extends ValidationComponent {
         {
           this.submitData();
           alert("data berhasil disimpan")
+          const { navigation } = this.props;
+        navigation.navigate("My Creation")
         }
       }
       submitData = () => {
@@ -119,4 +120,3 @@ export default class NewMeme extends ValidationComponent {
         )
     }
 }
-
