@@ -10,57 +10,57 @@ export default class NewMeme extends ValidationComponent {
             ImageURL: "https://picsum.photos/1080/1080",
             TopText: "",
             BottomText: "",
-            id:global.id,
-            numoflike:0
+            id: global.id,
+            numoflike: 0
         }
     }
     _onPressButton = () => {
-        if(this.validate({
-          ImageURL: {
-            required: true
-          },
-          TopText: {
-            required: true,
-          },
-          BottomText: {
-            required: true,
-          },
-        }))
-        {
-          this.submitData();
-          alert("data berhasil disimpan")
-          const { navigation } = this.props;
-        navigation.navigate("My Creation")
+        if (this.validate({
+            ImageURL: {
+                required: true
+            },
+            TopText: {
+                required: true,
+            },
+            BottomText: {
+                required: true,
+            },
+        })) {
+            this.submitData();
+            alert("data berhasil disimpan")
+            const { navigation } = this.props;
+            navigation.popToTop();
+            navigation.navigate("My Creation")
         }
-      }
-      submitData = () => {
+    }
+    submitData = () => {
         const options = {
-         method: 'POST',
-         headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded'
-         }),
-         body: "url="+this.state.ImageURL+"&"+
-            "teksatas="+this.state.TopText+"&"+
-            "teksbawah="+this.state.BottomText+"&"+
-            "user_id="+this.state.id+"&"+
-            "numoflike="+this.state.numoflike
+            method: 'POST',
+            headers: new Headers({
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }),
+            body: "url=" + this.state.ImageURL + "&" +
+                "teksatas=" + this.state.TopText + "&" +
+                "teksbawah=" + this.state.BottomText + "&" +
+                "user_id=" + this.state.id + "&" +
+                "numoflike=" + this.state.numoflike
         };
-         try {
-          fetch('https://ubaya.fun/react/160819001/addmeme.php',
-          options)
-           .then(response => response.json())
-           .then(resjson =>{
-            console.log(resjson);
-            if(resjson.result==='success') alert('sukses')
-           });
-         } catch (error) {
-          console.log(error);
-         }
+        try {
+            fetch('https://ubaya.fun/react/160819001/addmeme.php',
+                options)
+                .then(response => response.json())
+                .then(resjson => {
+                    console.log(resjson);
+                    if (resjson.result === 'success') alert('sukses')
+                });
+        } catch (error) {
+            console.log(error);
         }
+    }
     render() {
         return (
-            
-            <ScrollView style={style.container} >
+
+            <ScrollView automaticallyAdjustKeyboardInsets={true} style={style.container} >
                 <View style={{
                     flex: 1,
                     backgroundColor: '#f1dd96',
@@ -89,7 +89,7 @@ export default class NewMeme extends ValidationComponent {
                         ref="ImageURL"
                         onChangeText={(ImageURL) => this.setState({ ImageURL })}
                         value={this.state.ImageURL}
-                    /> 
+                    />
                     <Text style={style.text_body}>Top Text</Text>
                     <TextInput
                         style={style.input}

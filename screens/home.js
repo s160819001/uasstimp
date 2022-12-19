@@ -1,6 +1,6 @@
-import { View, ScrollView } from "react-native";
-import { Text, Button, Card, Icon, Image } from '@rneui/base';
-import React, { Component } from "react";
+import { View, ScrollView, RefreshControl } from "react-native";
+import { Text, Button, Card, Icon, Image, Dialog } from '@rneui/base';
+import React, { Component, useEffect } from "react";
 import style from "../assets/style";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
@@ -10,14 +10,18 @@ import { FlatList } from "react-native-gesture-handler";
 class Home extends React.Component {
     constructor() {
         super();
+
         this.state = {
             tes: "Menunggu API",
+            refreshing: false,
+            is_fetch: false,
             data: [],
         }
         this.fetchData();
     }
-    fetchData = () => {
+    fetchData() {
         try {
+            // this.setState({refreshing:true});
             fetch('https://ubaya.fun/react/160819001/get_memes.php')
                 .then(response => response.json())
                 .then(resjson => {
@@ -25,9 +29,10 @@ class Home extends React.Component {
                         this.state = {
                             tes: resjson.result,
                             //   tes:resjson.data[0].url,
-                            data: resjson.data
+                            data: resjson.data,
+                            is_fetch: true,
                         })
-                });
+                })
         } catch (error) {
             console.log(error);
         }
@@ -95,7 +100,7 @@ class Home extends React.Component {
                                 }}
                                 onPress={() => {
                                     const { navigation } = this.props;
-                                    navigation.navigate("Meme Detail",{idmeme:item.id})
+                                    navigation.navigate("Meme Detail", { idmeme: item.id })
                                 }}
                             />
                         </View>
@@ -106,19 +111,48 @@ class Home extends React.Component {
         />
     }
     render() {
-        return <View style={style.container}>
-            <ScrollView style={style.container} contentContainerStyle={{paddingBottom:85}}>
-                {this.showdata(this.state.data)}
-            </ScrollView>
-            <FAB
-                icon="plus"
-                style={style.fab}
-                mode='elevated'
-                onPress={() => {
-                    const { navigation } = this.props;
-                    navigation.navigate("Create Your Meme")
-                }} />
-        </View>
+        if (!this.state.is_fetch) {
+            this.fetchData();
+            // return <Text>{this.state.tes}</Text>
+            return <Dialog><Dialog.Loading /></Dialog>
+        } else {
+            return <View style={style.container}>
+                <ScrollView style={style.container} contentContainerStyle={{ paddingBottom: 85 }} refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => {
+                            try {
+                                this.setState({refreshing:true});
+                                fetch('https://ubaya.fun/react/160819001/get_memes.php')
+                                    .then(response => response.json())
+                                    .then(resjson => {
+                                        this.setState(
+                                            this.state = {
+                                                tes: resjson.result,
+                                                //   tes:resjson.data[0].url,
+                                                data: resjson.data,
+                                                is_fetch: true,
+                                                refreshing:false
+                                            })
+                                    })
+                            } catch (error) {
+                                console.log(error);
+                            }
+                        }}
+                    />
+                }>
+                    {this.showdata(this.state.data)}
+                </ScrollView>
+                <FAB
+                    icon="plus"
+                    style={style.fab}
+                    mode='elevated'
+                    onPress={() => {
+                        const { navigation } = this.props;
+                        navigation.navigate("Create Your Meme")
+                    }} />
+            </View>
+        }
     }
 }
 

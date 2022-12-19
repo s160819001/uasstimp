@@ -1,5 +1,5 @@
-import { View, ScrollView } from "react-native";
-import { Text, Button, Card, Icon, Image } from '@rneui/base';
+import { View, ScrollView, RefreshControl } from "react-native";
+import { Text, Button, Card, Icon, Image, Dialog } from '@rneui/base';
 import React, { Component } from "react";
 import style from "../assets/style";
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,8 +13,9 @@ class MyCreation extends React.Component {
         this.state = {
             tes: "Menunggu API",
             data: [],
-            username: global.activeuser
-
+            username: global.activeuser,
+            is_fetch: false,
+            refreshing: false
         }
         this.fetchData();
     }
@@ -40,7 +41,8 @@ class MyCreation extends React.Component {
                         this.state = {
                             tes: resjson.result,
                             //   tes:resjson.data[0].url,
-                            data: resjson.data
+                            data: resjson.data,
+                            is_fetch: true
                         })
                 });
         } catch (error) {
@@ -71,7 +73,7 @@ class MyCreation extends React.Component {
                     </View>
                     <View>
                         <View>
-                            <Text style={style.text_body}>{
+                            <Text style={style.text_date}>{
                                 this.dateformatter(item.tglbuat)}</Text>
                         </View>
                         <View style={{
@@ -115,7 +117,7 @@ class MyCreation extends React.Component {
                                 }}
                                 onPress={() => {
                                     const { navigation } = this.props;
-                                    navigation.navigate("Meme Detail",{idmeme:item.id})
+                                    navigation.navigate("Meme Detail", { idmeme: item.id })
                                 }}
                             />
                         </View>
@@ -125,13 +127,49 @@ class MyCreation extends React.Component {
         />
     }
     render() {
-        return (
-            <View style={style.container}>
-                <ScrollView style={style.container}>
-                    {this.showdata(this.state.data)}
-                </ScrollView>
-            </View>
-        )
+        if (!this.state.is_fetch) {
+            this.fetchData();
+            // return <Text>{this.state.tes}</Text>
+            return <Dialog><Dialog.Loading /></Dialog>
+        } else {
+            return (
+                <View style={style.container}>
+                    <ScrollView style={style.container} refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={() => {
+                                const options = {
+                                    method: 'POST',
+                                    headers: new Headers({
+                                        'Content-Type': 'application/x-www-form-urlencoded'
+                                    }),
+                                    body: "username=" + this.state.username
+                                };
+                                try {
+                                    this.setState({ refreshing: true });
+                                    fetch('https://ubaya.fun/react/160819001/mycreation.php', options)
+                                        .then(response => response.json())
+                                        .then(resjson => {
+                                            this.setState(
+                                                this.state = {
+                                                    tes: resjson.result,
+                                                    //   tes:resjson.data[0].url,
+                                                    data: resjson.data,
+                                                    is_fetch: true,
+                                                    refreshing: false
+                                                })
+                                        });
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            }}
+                        />
+                    }>
+                        {this.showdata(this.state.data)}
+                    </ScrollView>
+                </View>
+            )
+        }
     }
 }
 export default function (props) {

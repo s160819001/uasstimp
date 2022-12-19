@@ -1,5 +1,5 @@
-import { View, TextInput,NativeModules } from "react-native";
-import { Text, Button, Avatar, CheckBox } from '@rneui/base';
+import { View, TextInput,NativeModules} from "react-native";
+import { Text, Button, Avatar,CheckBox} from '@rneui/base';
 import React, { Component } from "react";
 import { FAB } from 'react-native-paper';
 import style from "../assets/style";
@@ -16,9 +16,17 @@ class Settings extends React.Component {
             data: [],
             user_id: global.activeuser,
             private:0,
-            check:false
+            check:true
         }
         this.fetchData();
+    }
+    _onPressButton = () => {
+        alert("hai")
+
+            // const { navigation } = this.props;
+            // navigation.popToTop();
+            // navigation.navigate("My Creation")
+        
     }
     dateformatter(d) {
         var date = new Date(d);
@@ -42,6 +50,7 @@ class Settings extends React.Component {
                             // tes: resjson.result,
                             //   tes:resjson.data[0].privasi,
                             data: resjson.data,
+                            private:resjson.data[0].privasi
                             // tes: this.state.data.privasi
                         })
                 });
@@ -50,8 +59,7 @@ class Settings extends React.Component {
         }
     }
     showdata(data){
-        
-            return <FlatList
+       return <FlatList
             data={data}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) =>
@@ -102,13 +110,14 @@ class Settings extends React.Component {
                             containerStyle={{
                                 backgroundColor: 'rgba(0,0,0,0)',
                             }}
+                            value={this.state.check}
                         />
-                        <Button
+                        {/* <Button
                             onPress={this._onPressButton}
                             title="Save Changes"
                             buttonStyle={style.btn_style}
                             containerStyle={{ bottom: 30, position: 'absolute', width: '100%', alignSelf: 'center' }}
-                        />
+                        /> */}
                     </View>
                     </View>
             
@@ -121,6 +130,7 @@ class Settings extends React.Component {
         return (
             <View style={style.container}>
                 {/* {this.state.data['avatar']} */}
+                {/* {this.state.private} */}
                 {this.showdata(this.state.data)}
                 <FAB
                     icon="logout"
