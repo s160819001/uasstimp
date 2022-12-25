@@ -36,10 +36,11 @@ class Settings extends React.Component {
             alert("Please update your name first");
         }
         else{
-            this.submitData;
-            this.fetchData;
+            alert("do")
+            this.submitData();
+            this.fetchData();
+
         }
-        alert("hai")
 
             // const { navigation } = this.props;
             // navigation.popToTop();
@@ -120,7 +121,7 @@ class Settings extends React.Component {
 
         try {
             fetch('https://ubaya.fun/react/160819001/uploadfoto.php',
-                options)
+                options1)
                 .then(response => response.json())
                 .then(resjson => {
                     console.log(resjson);
@@ -214,11 +215,12 @@ class Settings extends React.Component {
             renderItem={({ item }) =>
             (
                     <View>
+                        {/* {this.state._imageUri = item.avatar} */}
                     <TouchableOpacity onPress={() => this.RBSheet.open()}>
                     <Avatar containerStyle={{
                         alignSelf: 'center',
                         marginVertical: 20
-                    }} rounded size={'xlarge'} source={{ uri: item.avatar }} />
+                    }} rounded size={'xlarge'} source={{ uri:this.state._imageUri }} />
                     {/* <Image containerStyle={{
                         alignSelf: 'center',
                         marginVertical: 20
@@ -226,11 +228,11 @@ class Settings extends React.Component {
                     
                     source={{uri: this.state._imageUri}}
                     /> */}
-            </TouchableOpacity>
-                    {/* <Avatar containerStyle={{
+                    </TouchableOpacity>
+                    <Avatar containerStyle={{
                         alignSelf: 'center',
                         marginVertical: 20
-                    }} rounded size={'xlarge'} source={{ uri: item.avatar }} /> */}
+                    }} rounded size={'xlarge'} source={{ uri: item.avatar }} />
                     <Text style={style.text_judul}>
                         {item.namadepan} {item.namabelakang}
                     </Text>
