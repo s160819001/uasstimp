@@ -13,6 +13,11 @@ export default StyleSheet.create({
     },
     text_body: {
         fontSize: 14,
+        color: '#917f54',
+        marginTop: 5,
+    },
+    text_date: {
+        fontSize: 14,
         color: '#ffffff',
         marginTop: 5,
     },
@@ -124,5 +129,14 @@ export default StyleSheet.create({
         alignSelf: 'center',
         borderBottomColor: '#000',
         borderBottomWidth: 1
-    }
+    },
+    viewRow2:{
+        height:80,
+        flexDirection:"row",
+        alignItems: 'center'
+    },
+    btn: {
+        height: 40,
+        width:120,  
+      },
 });

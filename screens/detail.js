@@ -7,7 +7,7 @@ import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList } from "react-native-gesture-handler";
 import ValidationComponent from "react-native-form-validator";
-class Detail extends React.Component{
+class Detail extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -16,25 +16,24 @@ class Detail extends React.Component{
             data: [],
             id: 0,
             is_fetch: false
-            ,comment:"",
-            iduser:global.id
+            , comment: "",
+            iduser: global.id
         }
     }
-    _onPressButton = () => {
-        if(this.state.comment == "")
-        {
+    _onPressButton = async () => {
+        if (this.state.comment == "") {
             alert("Harap isi data komentar terlebih dahulu")
         }
-        else{
+        else {
             this.submitData();
-            alert("data berhasil disimpan")
+            // alert("data berhasil disimpan")
             this.fetchData()
         }
 
-            // const { navigation } = this.props;
-            // navigation.popToTop();
-            // navigation.navigate("My Creation")
-        
+        // const { navigation } = this.props;
+        // navigation.popToTop();
+        // navigation.navigate("My Creation")
+
     }
     submitData = () => {
         const options = {
@@ -52,7 +51,8 @@ class Detail extends React.Component{
                 .then(response => response.json())
                 .then(resjson => {
                     console.log(resjson);
-                    if (resjson.result === 'success') alert('sukses')
+                    this.setState({ comment: "" });
+                    // if (resjson.result === 'success') alert('sukses')
                 });
         } catch (error) {
             console.log(error);
@@ -102,7 +102,7 @@ class Detail extends React.Component{
                     {/* <Text>{this.state.data}</Text> */}
 
                     <ScrollView automaticallyAdjustKeyboardInsets={true} style={{ height: '100%', backgroundColor: 'rgba(0,0,0,0)' }}>
-                        <ScrollView style={{height:575}}>
+                        <ScrollView style={{ height: 575 }}>
 
                             <Card containerStyle={style.card}>
                                 <View style={{
