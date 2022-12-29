@@ -64,31 +64,39 @@ class Detail extends React.Component {
         var formateddate = date.toLocaleString("en-GB", { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
         return formateddate;
     }
-    sensorname(firstName, lastName){
-        var newFirstName = "";
-        var newLastName = "";
-    
-        newFirstName = firstName.substring(0, 3);
-        if(lastName ==null){
-            newLastName = "";
-        }
+    sensorname(firstName, lastName, privasi) {
 
-        
-        
-        for(var i = 0; i < firstName.length; i++){
-        if(i > 2) {
-            newFirstName += "*";
+        if (privasi == 1) {
+
+            var newFirstName = "";
+            var newLastName = "";
+
+            newFirstName = firstName.substring(0, 3);
+            if (lastName == null) {
+                newLastName = "";
             }
-        }
-        if(lastName!=null){
-            for(var i = 0; i < lastName.length; i++){
-                newLastName += "*";
-                }
-        } 
 
-        console.log(newFirstName + " " + newLastName);
-        return newFirstName + " " + newLastName;
-        
+
+
+            for (var i = 0; i < firstName.length; i++) {
+                if (i > 2) {
+                    newFirstName += "*";
+                }
+            }
+            if (lastName != null) {
+                for (var i = 0; i < lastName.length; i++) {
+                    newLastName += "*";
+                }
+            }
+
+            console.log(newFirstName + " " + newLastName);
+            return newFirstName + " " + newLastName;
+        }else if(privasi==0&&lastName!=null){
+            return firstName+" "+lastName;
+        }else if(privasi==0&&lastName==null){
+            return firstName;
+        }
+
     }
     fetchData = () => {
         const options = {
@@ -102,6 +110,7 @@ class Detail extends React.Component {
             fetch('https://ubaya.fun/react/160819001/detailmeme.php', options)
                 .then(response => response.json())
                 .then(resjson => {
+                    console.log(resjson)
                     this.setState(
                         this.state = {
                             tes: resjson.result,
@@ -190,7 +199,7 @@ class Detail extends React.Component {
                                                 color: '#ffffff',
                                                 // margin: 10,
                                                 fontWeight: 'bold'
-                                            }}>{this.sensorname(item.namadepan,item.namabelakang)}</Text>
+                                            }}>{this.sensorname(item.namadepan, item.namabelakang, item.privasi)}</Text>
                                             <Text style={{
                                                 alignSelf: 'center',
                                                 fontSize: 14,

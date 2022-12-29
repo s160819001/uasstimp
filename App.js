@@ -121,7 +121,7 @@ export default class App extends Component {
         })}
       >
         <Tab.Screen name="Home" component={NavMeme} options={{ headerShown: false }} />
-        <Tab.Screen name="My Creation" component={MyCreation} options={{ headerShown: false }} />
+        <Tab.Screen name="My Creation" component={NavMeme2} options={{ headerShown: false }} />
         <Tab.Screen name="Leaderboard" component={Leaderboard} options={{ headerShown: false }} />
         <Tab.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
       </Tab.Navigator>
@@ -325,4 +325,12 @@ function NavMeme() {
   );
 }
 
+function NavMeme2() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="My Creation" component={MyCreation} options={{ headerShown: false }} />
+      <Stack.Screen name="Meme Detail" component={Detail}/>
+    </Stack.Navigator>
+  );
+}
 

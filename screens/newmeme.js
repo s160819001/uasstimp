@@ -11,7 +11,8 @@ export default class NewMeme extends ValidationComponent {
             TopText: "",
             BottomText: "",
             id: global.id,
-            numoflike: 0
+            numoflike: 0,
+            view:0
         }
     }
     _onPressButton = () => {
@@ -43,7 +44,8 @@ export default class NewMeme extends ValidationComponent {
                 "teksatas=" + this.state.TopText + "&" +
                 "teksbawah=" + this.state.BottomText + "&" +
                 "user_id=" + this.state.id + "&" +
-                "numoflike=" + this.state.numoflike
+                "numoflike=" + this.state.numoflike + "&" +
+                "view="+this.state.view
         };
         try {
             fetch('https://ubaya.fun/react/160819001/addmeme.php',

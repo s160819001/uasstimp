@@ -1,5 +1,5 @@
 import { View, TextInput, NativeModules, TouchableOpacity, Image } from "react-native";
-import { Text, Button, Avatar, CheckBox } from '@rneui/base';
+import { Text, Button, Avatar, CheckBox, Dialog } from '@rneui/base';
 import React, { Component } from "react";
 import { FAB } from 'react-native-paper';
 import style from "../assets/style";
@@ -30,7 +30,8 @@ class Settings extends React.Component {
             id: global.id,
             changed: !false,
             avatarChanged: !false,
-            avatar: ''
+            avatar: '',
+            is_fetch: false
         }
         this.fetchData();
     }
@@ -75,6 +76,7 @@ class Settings extends React.Component {
                             private: resjson.data[0].privasi,
                             _imageUri: resjson.data[0].avatar,
                             avatar: resjson.data[0].avatar,
+                            is_fetch: true
                             // tes: this.state.data.privasi
                         })
                 });
@@ -111,11 +113,16 @@ class Settings extends React.Component {
             console.log(error);
         }
     }
-    submitData = () => {
+    submitData = async () => {
+
+        global.namadepan = await AsyncStorage.getItem('namadepan');
+        global.namabelakang = await AsyncStorage.getItem('namabelakang');
+        console.log(global.namadepan);
+        console.log(global.namabelakang);
         if (this.state.first_name == "") {
             this.setState({ first_name: global.namadepan });
-        } 
-        if (this.state.last_name =="") {
+        }
+        if (this.state.last_name == "") {
             this.setState({ last_name: global.namabelakang });
         }
         const data = new FormData();
@@ -153,11 +160,14 @@ class Settings extends React.Component {
             fetch('https://ubaya.fun/react/160819001/updateuser.php',
                 options)
                 .then(response => response.json())
-                .then(resjson => {
+                .then(async resjson => {
                     console.log(resjson);
                     if (resjson.result === 'success') {
                         alert('sukses');
-                        this.setState({first_name:"",last_name:""})
+                        await AsyncStorage.setItem('namadepan', this.state.first_name);
+                        await AsyncStorage.setItem('namabelakang', this.state.last_name);
+                        this.setState({ first_name: "", last_name: "" })
+                        this.fetchData();
                     }
                 });
         } catch (error) {
@@ -216,7 +226,7 @@ class Settings extends React.Component {
     }
 
     _imgKamera = async () => {
-        const status= await ImagePicker.requestCameraPermissionsAsync();
+        const status = await ImagePicker.requestCameraPermissionsAsync();
         console.log(status);
         let result = await ImagePicker.launchCameraAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -409,30 +419,36 @@ class Settings extends React.Component {
 
     }
     render() {
-        return (
-            <View style={style.container}>
-                {this.showdata(this.state.data)}
-                <FAB
-                    icon="logout"
-                    style={{
-                        position: 'absolute',
-                        margin: 16,
-                        right: 0,
-                        top: 0,
-                        borderRadius: 100,
-                    }}
-                    mode='elevated'
-                    onPress={doLogout} />
+        if (!this.state.is_fetch) {
+            this.fetchData();
+            // return <Text>{this.state.tes}</Text>
+            return <Dialog><Dialog.Loading /></Dialog>
+        } else {
+            return (
+                <View style={style.container}>
+                    {this.showdata(this.state.data)}
+                    <FAB
+                        icon="logout"
+                        style={{
+                            position: 'absolute',
+                            margin: 16,
+                            right: 0,
+                            top: 0,
+                            borderRadius: 100,
+                        }}
+                        mode='elevated'
+                        onPress={doLogout} />
 
-                <Button
-                    onPress={this._onPressButton}
-                    title="Save Changes"
-                    disabled={this.state.changed}
-                    buttonStyle={style.btn_style}
-                    containerStyle={{ position: 'absolute', bottom: 30, width: '100%', alignSelf: 'center', paddingHorizontal: 10 }}
-                />
-            </View>
-        )
+                    <Button
+                        onPress={this._onPressButton}
+                        title="Save Changes"
+                        disabled={this.state.changed}
+                        buttonStyle={style.btn_style}
+                        containerStyle={{ position: 'absolute', bottom: 30, width: '100%', alignSelf: 'center', paddingHorizontal: 10 }}
+                    />
+                </View>
+            )
+        }
     }
 }
 
