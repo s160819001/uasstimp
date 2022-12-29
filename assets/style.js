@@ -131,9 +131,9 @@ export default StyleSheet.create({
         borderBottomWidth: 1
     },
     viewRow2:{
-        height:80,
+        marginTop:5,
         flexDirection:"row",
-        alignItems: 'center'
+        justifyContent: 'center'
     },
     btn: {
         height: 40,
