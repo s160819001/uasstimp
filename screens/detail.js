@@ -64,6 +64,32 @@ class Detail extends React.Component {
         var formateddate = date.toLocaleString("en-GB", { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
         return formateddate;
     }
+    sensorname(firstName, lastName){
+        var newFirstName = "";
+        var newLastName = "";
+    
+        newFirstName = firstName.substring(0, 3);
+        if(lastName ==null){
+            newLastName = "";
+        }
+
+        
+        
+        for(var i = 0; i < firstName.length; i++){
+        if(i > 2) {
+            newFirstName += "*";
+            }
+        }
+        if(lastName!=null){
+            for(var i = 0; i < lastName.length; i++){
+                newLastName += "*";
+                }
+        } 
+
+        console.log(newFirstName + " " + newLastName);
+        return newFirstName + " " + newLastName;
+        
+    }
     fetchData = () => {
         const options = {
             method: 'POST',
@@ -164,7 +190,7 @@ class Detail extends React.Component {
                                                 color: '#ffffff',
                                                 // margin: 10,
                                                 fontWeight: 'bold'
-                                            }}>{item.namadepan} {item.namabelakang}</Text>
+                                            }}>{this.sensorname(item.namadepan,item.namabelakang)}</Text>
                                             <Text style={{
                                                 alignSelf: 'center',
                                                 fontSize: 14,
