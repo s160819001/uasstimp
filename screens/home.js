@@ -1,6 +1,6 @@
 import { View, ScrollView, RefreshControl } from "react-native";
 import { Text, Button, Card, Icon, Image, Dialog, ButtonGroup } from '@rneui/base';
-import React, { Component, useEffect } from "react";
+import React from "react";
 import style from "../assets/style";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
@@ -10,15 +10,14 @@ import { FlatList } from "react-native-gesture-handler";
 class Home extends React.Component {
     constructor() {
         super();
-
         this.state = {
             tes: "Menunggu API",
             refreshing: false,
             is_fetch: false,
             data: [],
-            datalike:[],
-            datacomment:[],
-            dataview:[],
+            datalike: [],
+            datacomment: [],
+            dataview: [],
             selectedIndex: 0,
         }
         this.fetchData();
@@ -42,34 +41,26 @@ class Home extends React.Component {
             body: "meme=" + meme_id + "&" + "user=" + global.activeuser + "&" + "method=" + method
         };
         try {
-            // this.setState({refreshing:true});
             fetch('https://ubaya.fun/react/160819001/likes.php', options)
                 .then(response => response.json())
                 .then(resjson => {
                     console.log(resjson)
                     if (resjson.result == "success") {
-                        this.fetchData();
+                        this.refetchdata();
                     }
-                    // this.setState(
-                    //     this.state = {
-                    //         tes: resjson.result,
-                    //         //   tes:resjson.data[0].url,
-                    //         data: resjson.data,
-                    //         is_fetch: true,
-                    //     })
                 })
         } catch (error) {
             console.log(error);
         }
     }
 
-    viewAdd(banyak,idmeme) {
+    viewAdd(banyak, idmeme) {
         const options = {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/x-www-form-urlencoded'
             }),
-            body: "view=" + (banyak+1) + "&" +"meme_id=" + idmeme
+            body: "view=" + (banyak + 1) + "&" + "meme_id=" + idmeme
         };
         try {
             // this.setState({refreshing:true});
@@ -78,15 +69,8 @@ class Home extends React.Component {
                 .then(resjson => {
                     console.log(resjson)
                     if (resjson.result == "success") {
-                        this.fetchData();
+                        this.refetchdata();
                     }
-                    // this.setState(
-                    //     this.state = {
-                    //         tes: resjson.result,
-                    //         //   tes:resjson.data[0].url,
-                    //         data: resjson.data,
-                    //         is_fetch: true,
-                    //     })
                 })
         } catch (error) {
             console.log(error);
@@ -94,9 +78,8 @@ class Home extends React.Component {
     }
 
     setSelectedIndex(value) {
-        this.setState({ selectedIndex: value })
-
-        console.log(this.state.selectedIndex)
+        this.setState({ selectedIndex: value });
+        this.refetchdata();
     }
 
     fetchData() {
@@ -108,14 +91,12 @@ class Home extends React.Component {
             body: "user=" + global.activeuser
         };
         try {
-            // this.setState({refreshing:true});
             fetch('https://ubaya.fun/react/160819001/get_memes.php', options)
                 .then(response => response.json())
                 .then(resjson => {
                     this.setState(
                         this.state = {
                             tes: resjson.result,
-                            //   tes:resjson.data[0].url,
                             data: resjson.data,
                             is_fetch: true,
                         })
@@ -134,14 +115,12 @@ class Home extends React.Component {
             body: "user=" + global.activeuser
         };
         try {
-            // this.setState({refreshing:true});
             fetch('https://ubaya.fun/react/160819001/get_memes_like.php', options)
                 .then(response => response.json())
                 .then(resjson => {
                     this.setState(
                         this.state = {
                             tes: resjson.result,
-                            //   tes:resjson.data[0].url,
                             datalike: resjson.data,
                             is_fetch: true,
                         })
@@ -150,6 +129,7 @@ class Home extends React.Component {
             console.log(error);
         }
     }
+
     fetchDataComment() {
         const options = {
             method: 'POST',
@@ -159,14 +139,12 @@ class Home extends React.Component {
             body: "user=" + global.activeuser
         };
         try {
-            // this.setState({refreshing:true});
             fetch('https://ubaya.fun/react/160819001/get_memes_comment.php', options)
                 .then(response => response.json())
                 .then(resjson => {
                     this.setState(
                         this.state = {
                             tes: resjson.result,
-                            //   tes:resjson.data[0].url,
                             datacomment: resjson.data,
                             is_fetch: true,
                         })
@@ -185,14 +163,12 @@ class Home extends React.Component {
             body: "user=" + global.activeuser
         };
         try {
-            // this.setState({refreshing:true});
             fetch('https://ubaya.fun/react/160819001/get_memes_view.php', options)
                 .then(response => response.json())
                 .then(resjson => {
                     this.setState(
                         this.state = {
                             tes: resjson.result,
-                            //   tes:resjson.data[0].url,
                             dataview: resjson.data,
                             is_fetch: true,
                         })
@@ -259,16 +235,6 @@ class Home extends React.Component {
                                 fontSize: 18,
                                 color: '#fff'
                             }}> {item.view}</Text>
-                            {/* <Text style={{
-                                alignSelf: 'center',
-                                fontSize: 16,
-                                color: '#fff',
-                                backgroundColor:'red'
-                            }}>&nbsp;&nbsp;&nbsp;<Icon
-                                    name='eye'
-                                    type='ionicon'
-                                    color='#fff'
-                                    size={30} />20</Text> */}
                             <Button
                                 icon={
                                     <Ionicons
@@ -285,73 +251,76 @@ class Home extends React.Component {
                                     right: 0
                                 }}
                                 onPress={() => {
-                                    this.viewAdd(item.view,item.id)
+                                    this.viewAdd(item.view, item.id);
                                     const { navigation } = this.props;
                                     navigation.navigate("Meme Detail", { idmeme: item.id })
                                 }}
-                                
                             />
                         </View>
                     </Card>
-
                 </View>
             )}
         />
     }
-    show(){
-        // console.log(this.state.selectedIndex)
-        if(this.state.selectedIndex == 0){
-            // this.fetchData();
-           return this.showdata(this.state.data)
-        }
-        else if(this.state.selectedIndex == 1){
-            // this.fetchDataLike();
-           return this.showdata(this.state.datalike)
-        }
-        else if(this.state.selectedIndex == 2){
-            // this.fetchDataComment();
-          return  this.showdata(this.state.datacomment)
-        } else if(this.state.selectedIndex == 3){
-            // this.fetchDataView();
-           return this.showdata(this.state.dataview)
+
+    refetchdata() {
+        if (this.state.selectedIndex == 0)
+            this.fetchData()
+        else if (this.state.selectedIndex == 1)
+            this.fetchDataLike()
+        else if (this.state.selectedIndex == 2)
+            this.fetchDataComment()
+        else if (this.state.selectedIndex == 3)
+            this.fetchDataView()
+    }
+
+    show() {
+        if (this.state.selectedIndex == 0) {
+            return this.showdata(this.state.data)
+        } else if (this.state.selectedIndex == 1) {
+            return this.showdata(this.state.datalike)
+        } else if (this.state.selectedIndex == 2) {
+            return this.showdata(this.state.datacomment)
+        } else if (this.state.selectedIndex == 3) {
+            return this.showdata(this.state.dataview)
         }
     }
+
     render() {
         if (!this.state.is_fetch) {
             this.fetchData();
             this.fetchDataLike();
             this.fetchDataComment();
             this.fetchDataView();
-            // return <Text>{this.state.tes}</Text>
             return <Dialog><Dialog.Loading /></Dialog>
         } else {
 
             return <View style={style.container}>
                 <View>
-                    {/* <Text style={{ textAlign: 'center', marginTop:5, fontSize:11 }}>Sort By</Text> */}
+                    <Text style={{ textAlign: 'center', marginTop: 5, fontSize: 11 }}>Sort By</Text>
                     <ButtonGroup
                         buttons={[
                             <Icon
                                 name='time'
                                 type='ionicon'
                                 color='#fff'
-                                
-                                />,
+
+                            />,
                             <Icon
                                 name='heart'
                                 type='ionicon'
                                 color='#fff'
-                                />,
+                            />,
                             <Icon
                                 name='chatbubble-ellipses'
                                 type='ionicon'
-                                color='#fff' 
-                                />,
+                                color='#fff'
+                            />,
                             <Icon
                                 name='eye'
                                 type='ionicon'
-                                color='#fff' 
-                                />]}
+                                color='#fff'
+                            />]}
                         selectedIndex={this.state.selectedIndex}
                         onPress={(value) => {
                             this.setSelectedIndex(value);
@@ -366,36 +335,11 @@ class Home extends React.Component {
                     <RefreshControl
                         refreshing={this.state.refreshing}
                         onRefresh={() => {
-                            const options = {
-                                method: 'POST',
-                                headers: new Headers({
-                                    'Content-Type': 'application/x-www-form-urlencoded'
-                                }),
-                                body: "user=" + global.activeuser
-                            };
-                            try {
-                                this.setState({ refreshing: true });
-                                fetch('https://ubaya.fun/react/160819001/get_memes.php', options)
-                                    .then(response => response.json())
-                                    .then(resjson => {
-                                        this.setState(
-                                            this.state = {
-                                                tes: resjson.result,
-                                                //   tes:resjson.data[0].url,
-                                                data: resjson.data,
-                                                is_fetch: true,
-                                                refreshing: false
-                                            })
-                                    })
-                            } catch (error) {
-                                console.log(error);
-                            }
+                            this.refetchdata()
                         }}
                     />
                 }>
                     {this.show()}
-                    {/* {this.showdata(this.state.data)} */}
-                    {/* {this.show()} */}
                 </ScrollView>
                 <FAB
                     icon="plus"

@@ -12,7 +12,6 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
-      score: 0
     };
 
   }
@@ -35,7 +34,6 @@ class Login extends Component {
         await AsyncStorage.setItem('username', json.username);
         await AsyncStorage.setItem('namadepan', json.namadepan);
         await AsyncStorage.setItem('namabelakang', json.namabelakang);
-        // await AsyncStorage.setItem('namabelakang', json.namabelakang);
         alert('Login Sukses');
         NativeModules.DevSettings.reload();
       } catch (e) {
@@ -96,29 +94,6 @@ class Login extends Component {
             containerStyle={{ marginVertical: '5%' }}
           />
         </View>
-        {/* <Card containerStyle={style.card}>
-          <Card.Title>Silahkan Login</Card.Title>
-          <Card.Divider />
-          <Input
-            onChangeText={(username) => this.setState({ username })}
-            disabledInputStyle={{ background: "#ddd" }}
-            leftIcon={<Ionicons name='person' size={15} />}
-            placeholder="username"
-          />
-          <Input
-            onChangeText={(password) => this.setState({ password })}
-            disabledInputStyle={{ background: "#ddd" }}
-            secureTextEntry={true}
-            leftIcon={<Ionicons name='key' size={15} />}
-            placeholder="password"
-          />
-          <Button
-            onPress={() => { this.doLogin(this.state.username, this.state.password) }}
-            title="LOGIN"
-            buttonStyle={style.btn_style}
-            containerStyle={style.btn_container}
-          />
-        </Card> */}
       </View>
 
     );
@@ -126,25 +101,3 @@ class Login extends Component {
 }
 
 export default Login;
-
-
-
-// const styles = StyleSheet.create({
-//   input: {
-//     height: 40,
-//     width: 200,
-//     borderWidth: 1,
-//     padding: 10,
-//   },
-//   button: {
-//     height: 40,
-//     width: 200,
-//   },
-//   viewRow: {
-//     flexDirection: "row",
-//     justifyContent: "flex-end",
-//     alignItems: 'center',
-//     paddingRight: 50,
-//     margin: 3
-//   }
-// })

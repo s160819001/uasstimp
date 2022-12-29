@@ -1,6 +1,6 @@
-import { View, TextInput, NativeModules, TouchableOpacity, Image } from "react-native";
+import { View, TextInput, NativeModules, TouchableOpacity } from "react-native";
 import { Text, Button, Avatar, CheckBox, Dialog } from '@rneui/base';
-import React, { Component } from "react";
+import React from "react";
 import { FAB } from 'react-native-paper';
 import style from "../assets/style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -35,6 +35,7 @@ class Settings extends React.Component {
         }
         this.fetchData();
     }
+
     _onPressButton = () => {
         // if (this.state.first_name == "") {
         //     alert("Please update your name first");
@@ -51,11 +52,13 @@ class Settings extends React.Component {
         // navigation.navigate("My Creation")
 
     }
+
     dateformatter(d) {
         var date = new Date(d);
         var formateddate = date.toLocaleString("en-GB", { month: 'long', year: 'numeric', hour12: false });
         return formateddate;
     }
+
     fetchData = () => {
         const options = {
             method: 'POST',
@@ -70,20 +73,18 @@ class Settings extends React.Component {
                 .then(resjson => {
                     this.setState(
                         this.state = {
-                            // tes: resjson.result,
-                            //   tes:resjson.data[0].privasi,
                             data: resjson.data,
                             private: resjson.data[0].privasi,
                             _imageUri: resjson.data[0].avatar,
                             avatar: resjson.data[0].avatar,
                             is_fetch: true
-                            // tes: this.state.data.privasi
                         })
                 });
         } catch (error) {
             console.log(error);
         }
     }
+
     updatePrivacy = () => {
         if (this.state.check)
             this.setState({ check: false })
@@ -113,8 +114,8 @@ class Settings extends React.Component {
             console.log(error);
         }
     }
-    submitData = async () => {
 
+    submitData = async () => {
         global.namadepan = await AsyncStorage.getItem('namadepan');
         global.namabelakang = await AsyncStorage.getItem('namabelakang');
         console.log(global.namadepan);
@@ -127,24 +128,6 @@ class Settings extends React.Component {
         }
         const data = new FormData();
         data.append('user_id', this.state.id);
-        // data.append('avatar', this.state._image64);
-
-        const options1 = {
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'multipart/form-data'
-            }),
-            body: data
-        };
-
-        // try {
-        //     fetch('https://ubaya.fun/react/160819001/uploadfoto.php',
-        //         options1)
-        //         .then(response => response.json())
-        //         .then(resjson => {
-        //             console.log(resjson);
-        //             if (resjson.result === 'success') {
-        //                 alert(resjson.msg);
 
         const options = {
             method: 'POST',
@@ -153,7 +136,6 @@ class Settings extends React.Component {
             }),
             body: "first_name=" + this.state.first_name + "&" +
                 "last_name=" + this.state.last_name + "&" +
-                // "avatar=" + this.state._image64 + "&" +
                 "user_id=" + this.state.id
         };
         try {
@@ -173,11 +155,6 @@ class Settings extends React.Component {
         } catch (error) {
             console.log(error);
         };
-        //             }
-        //         });
-        // } catch (error) {
-        //     console.log(error);
-        // }
     }
 
     submitAvatar = () => {
@@ -238,7 +215,6 @@ class Settings extends React.Component {
 
         if (!result.canceled) {
             this._prosesFoto(result.uri);
-            // this._prosesFoto(result.uri)
         }
     }
 
@@ -253,7 +229,6 @@ class Settings extends React.Component {
             ],
             { compress: 1, format: SaveFormat.JPEG, base64: true }
         );
-        //alert(manipResult.base64);
         this.setState(
             this.state = {
                 _imageUri: manipResult.uri,
@@ -263,7 +238,6 @@ class Settings extends React.Component {
         )
     };
 
-
     showdata(data) {
         return <FlatList
             data={data}
@@ -271,7 +245,6 @@ class Settings extends React.Component {
             renderItem={({ item }) =>
             (
                 <ScrollView automaticallyAdjustKeyboardInsets={true}>
-                    {/* {this.state._imageUri = item.avatar} */}
                     <TouchableOpacity onPress={() => this.RBSheet.open()}>
                         <Avatar containerStyle={{
                             alignSelf: 'center',
@@ -403,25 +376,18 @@ class Settings extends React.Component {
                                         }}
                                         title="Gallery" />
                                 </View>
-
                             </RBSheet>
                         </ScrollView>
-
-
-
                     </View>
-
-
                 </ScrollView>
-
             )}
         />
 
     }
+
     render() {
         if (!this.state.is_fetch) {
             this.fetchData();
-            // return <Text>{this.state.tes}</Text>
             return <Dialog><Dialog.Loading /></Dialog>
         } else {
             return (

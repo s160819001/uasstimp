@@ -1,6 +1,6 @@
 import { View, ScrollView, RefreshControl } from "react-native";
-import { Text, Button, ListItem, Avatar, Dialog } from '@rneui/base';
-import React, { Component } from "react";
+import { ListItem, Avatar, Dialog } from '@rneui/base';
+import React from "react";
 import style from "../assets/style";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FlatList } from "react-native-gesture-handler";
@@ -17,6 +17,7 @@ class Leaderboard extends React.Component {
         }
         this.fetchData();
     }
+
     fetchData = () => {
         try {
             fetch('https://ubaya.fun/react/160819001/leaderboard.php')
@@ -25,7 +26,6 @@ class Leaderboard extends React.Component {
                     this.setState(
                         this.state = {
                             tes: resjson.result,
-                            //   tes:resjson.data[0].url,
                             data: resjson.data,
                             is_fetch: true
                         })
@@ -34,29 +34,6 @@ class Leaderboard extends React.Component {
             console.log(error);
         }
     }
-
-    // showdataprivasi(data){
-    //     return <FlatList
-    //     data={data}
-    //     // keyExtractor={(item) => item.id.toString()}
-    //     renderItem={({ item }) => (
-    //         <ListItem
-
-    //         containerStyle={style.listitem}
-    //     >
-
-    //         <ListItem.Content style={{ position: 'relative', flexDirection: 'row', alignItems: 'center' }}>
-    //             <View style={{ position: 'absolute', left: 0 }}>
-    //                 <ListItem.Title style={{ color: '#000', }}>
-    //                 {this.setState(
-    //                     this.state= {
-    //                         privasi:item.privasi})}
-    //                 </ListItem.Title>
-    //             </View>
-    //         </ListItem.Content>
-    //     </ListItem>
-    //     )}/>
-    // }
 
     sensorname(firstName, lastName, privasi) {
 
@@ -68,8 +45,6 @@ class Leaderboard extends React.Component {
             if (lastName == null) {
                 newLastName = "";
             }
-
-
 
             for (var i = 0; i < firstName.length; i++) {
                 if (i > 2) {
@@ -94,7 +69,6 @@ class Leaderboard extends React.Component {
     showdata(data) {
         return <FlatList
             data={data}
-            // keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
                 <ListItem
 
@@ -104,7 +78,6 @@ class Leaderboard extends React.Component {
                     <ListItem.Content style={{ position: 'relative', flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ position: 'absolute', left: 0 }}>
                             <ListItem.Title style={{ color: '#000', }}>
-                                {/* {item.namadepan} {item.namabelakang} */}
                                 {this.sensorname(item.namadepan, item.namabelakang, item.privasi)}
                             </ListItem.Title>
                         </View>
@@ -129,7 +102,6 @@ class Leaderboard extends React.Component {
     render() {
         if (!this.state.is_fetch) {
             this.fetchData();
-            // return <Text>{this.state.tes}</Text>
             return <Dialog><Dialog.Loading /></Dialog>
         } else {
 
@@ -137,20 +109,14 @@ class Leaderboard extends React.Component {
 
                 <ScrollView style={style.container} refreshControl={
                     <RefreshControl
-                        // refreshing={this.state.refreshing}
                         onRefresh={() => {
                             try {
-                                // this.setState({ refreshing: true });
                                 fetch('https://ubaya.fun/react/160819001/leaderboard.php')
                                     .then(response => response.json())
                                     .then(resjson => {
                                         this.setState(
                                             this.state = {
-                                                // tes: resjson.result,
-                                                //   tes:resjson.data[0].url,
                                                 data: resjson.data,
-                                                // is_fetch: true,
-                                                // refreshing: false
                                             })
                                     })
                             } catch (error) {

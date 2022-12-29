@@ -1,9 +1,8 @@
 import { View, ScrollView, RefreshControl } from "react-native";
-import { Text, Button, Card, Icon, Image, Dialog } from '@rneui/base';
-import React, { Component } from "react";
+import { Text, Button, Card, Image, Dialog } from '@rneui/base';
+import React from "react";
 import style from "../assets/style";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList } from "react-native-gesture-handler";
 
@@ -25,6 +24,7 @@ class MyCreation extends React.Component {
         var formateddate = date.toLocaleString("en-GB", { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
         return formateddate;
     }
+
     fetchData = () => {
         const options = {
             method: 'POST',
@@ -40,7 +40,6 @@ class MyCreation extends React.Component {
                     this.setState(
                         this.state = {
                             tes: resjson.result,
-                            //   tes:resjson.data[0].url,
                             data: resjson.data,
                             is_fetch: true
                         })
@@ -49,6 +48,7 @@ class MyCreation extends React.Component {
             console.log(error);
         }
     }
+
     showdata(data) {
         return <FlatList
             data={data}
@@ -126,10 +126,10 @@ class MyCreation extends React.Component {
             )}
         />
     }
+
     render() {
         if (!this.state.is_fetch) {
             this.fetchData();
-            // return <Text>{this.state.tes}</Text>
             return <Dialog><Dialog.Loading /></Dialog>
         } else {
             return (
@@ -153,7 +153,6 @@ class MyCreation extends React.Component {
                                             this.setState(
                                                 this.state = {
                                                     tes: resjson.result,
-                                                    //   tes:resjson.data[0].url,
                                                     data: resjson.data,
                                                     is_fetch: true,
                                                     refreshing: false

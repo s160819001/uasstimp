@@ -1,6 +1,6 @@
 import { View, ScrollView, TextInput } from "react-native";
-import { Text, Button, Card, Icon, Image, } from '@rneui/base';
-import React, { Component } from "react";
+import { Text, Button, Image, } from '@rneui/base';
+import React from "react";
 import style from "../assets/style";
 import ValidationComponent from 'react-native-form-validator';
 export default class NewMeme extends ValidationComponent {
@@ -12,9 +12,10 @@ export default class NewMeme extends ValidationComponent {
             BottomText: "",
             id: global.id,
             numoflike: 0,
-            view:0
+            view: 0
         }
     }
+
     _onPressButton = () => {
         if (this.validate({
             ImageURL: {
@@ -34,6 +35,7 @@ export default class NewMeme extends ValidationComponent {
             navigation.navigate("My Creation")
         }
     }
+
     submitData = () => {
         const options = {
             method: 'POST',
@@ -45,7 +47,7 @@ export default class NewMeme extends ValidationComponent {
                 "teksbawah=" + this.state.BottomText + "&" +
                 "user_id=" + this.state.id + "&" +
                 "numoflike=" + this.state.numoflike + "&" +
-                "view="+this.state.view
+                "view=" + this.state.view
         };
         try {
             fetch('https://ubaya.fun/react/160819001/addmeme.php',
@@ -59,6 +61,7 @@ export default class NewMeme extends ValidationComponent {
             console.log(error);
         }
     }
+
     render() {
         return (
 

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View, NativeModules, Image, TextInput } from "react-native";
 import { Input, Button, Text } from '@rneui/base';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import style from "../assets/style";
@@ -33,8 +32,6 @@ class Register extends Component {
 
             if (json.result == 'success') {
                 try {
-                    // await AsyncStorage.setItem('namadepan', json.namadepan);
-                    // await AsyncStorage.setItem('namabelakang', json.namabelakang);
                     alert('Register Sukses');
                     NativeModules.DevSettings.reload();
                 } catch (e) {
@@ -99,7 +96,6 @@ class Register extends Component {
                         onPress={() => { this.create(this.state.username, this.state.password) }}
                         title="Create Account"
                         buttonStyle={style.btn_style}
-                    // containerStyle={style.btn_container}
                     />
                 </View>
             </View>
