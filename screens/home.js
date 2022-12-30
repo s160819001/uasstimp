@@ -6,6 +6,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList } from "react-native-gesture-handler";
+import { LogBox } from 'react-native'
+
+LogBox.ignoreLogs(['VirtualizedLists should never be nested','source.uri']);
 
 class Home extends React.Component {
     constructor() {
