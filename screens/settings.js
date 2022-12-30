@@ -148,7 +148,9 @@ class Settings extends React.Component {
                         alert('sukses');
                         await AsyncStorage.setItem('namadepan', this.state.first_name);
                         await AsyncStorage.setItem('namabelakang', this.state.last_name);
-                        this.setState({ first_name: "", last_name: "" })
+                        global.namadepan = this.state.first_name;
+                        global.namabelakang = this.state.last_name;
+                        this.setState({ first_name: "", last_name: "", changed: !false })
                         this.fetchData();
                     }
                 });

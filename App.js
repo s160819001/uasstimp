@@ -1,16 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, NativeModules, Alert } from 'react-native';
+import { Text, View, NativeModules } from 'react-native';
 import { Image, Avatar } from '@rneui/base';
 import { FAB } from 'react-native-paper';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-import { HeaderBackButton } from '@react-navigation/elements';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Button } from '@rneui/base';
 import { Component } from 'react';
 
 import style from './assets/style';
@@ -31,17 +28,14 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      islogin: false
-      ,namadepan: "",
-      namabelakang:"",
-      avatar:"",
+      islogin: false,
+      namadepan: "",
+      namabelakang: "",
+      avatar: "",
       data: [],
-      user_id:'',
-      id:0
+      user_id: '',
+      id: 0
     }
-
-    global.giveup = false;
-    global.confirmgiveup = false;
 
     this.cekLogin().then((item) => {
       if (item != null) {
@@ -49,50 +43,45 @@ export default class App extends Component {
         this.setState(
           this.state = {
             islogin: true,
-            user_id:item
+            user_id: item
           });
-          this.fetchData()
+        this.fetchData()
       }
     });
-    
-  }
 
+  }
 
   fetchData = () => {
     const options = {
-        method: 'POST',
-        headers: new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }),
-        body: "user_id=" + this.state.user_id
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      body: "user_id=" + this.state.user_id
     };
     try {
-        fetch('https://ubaya.fun/react/160819001/getuser.php', options)
-            .then(response => response.json())
-            .then(resjson => {
-                this.setState(
-                    this.state = {
-                        // tes: resjson.result,
-                          namadepan:resjson.data[0].namadepan,
-                          namabelakang:resjson.data[0].namabelakang,
-                          avatar:resjson.data[0].avatar,
-                          id:resjson.data[0].id,
-                        data: resjson.data,
-                        
-                        // tes: this.state.data.privasi
-                    })
-            });
+      fetch('https://ubaya.fun/react/160819001/getuser.php', options)
+        .then(response => response.json())
+        .then(resjson => {
+          this.setState(
+            this.state = {
+              namadepan: resjson.data[0].namadepan,
+              namabelakang: resjson.data[0].namabelakang,
+              avatar: resjson.data[0].avatar,
+              id: resjson.data[0].id,
+              data: resjson.data,
+            })
+        });
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-}
+  }
 
   cekLogin = async () => {
     try {
       const value = await AsyncStorage.getItem('username');
       global.activeuser = value;
       console.debug(value);
-      //  alert(value);
       if (value !== null) {
         return value;
       }
@@ -115,9 +104,7 @@ export default class App extends Component {
           },
           tabBarActiveTintColor: '#fff',
           tabBarInactiveTintColor: '#265e80',
-          // tabBarActiveBackgroundColor:'#f1dd96',
-          // tabBarInactiveBackgroundColor:'#917f54',
-          tabBarStyle:{backgroundColor:'#917f54'}
+          tabBarStyle: { backgroundColor: '#917f54' }
         })}
       >
         <Tab.Screen name="Home" component={NavMeme} options={{ headerShown: false }} />
@@ -128,58 +115,46 @@ export default class App extends Component {
     )
   }
 
-  giveup() {
-    global.giveup = true;
-    global.confirmgiveup = false;
-  }
-  cancelgiveup() {
-    global.confirmgiveup = false;
-  }
-
-  getnamadepan(){
+  getnamadepan() {
     return this.state.namadepan
     // console.log(global.namadepan)
   }
-
-  getnamabelakang(){
+  getnamabelakang() {
     return this.state.namabelakang
     // console.log(global.namadepan)
   }
-  getavatar(){
+  getavatar() {
     return this.state.avatar
     // console.log(global.namadepan)
   }
-  getid(){
+  getid() {
     return this.state.id
     // console.log(global.namadepan)
   }
 
   render() {
     if (!this.state.islogin) {
-      
       return (
-        
-        <NavigationContainer><Stack.Navigator>
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-          <Stack.Screen name="Create Account" component={Register}
-            options={{
-              title: '',
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: '#f1dd96',
-              }
-            }} />
-        </Stack.Navigator>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Create Account" component={Register}
+              options={{
+                title: '',
+                headerShown: true,
+                headerStyle: {
+                  backgroundColor: '#f1dd96',
+                }
+              }} />
+          </Stack.Navigator>
         </NavigationContainer>);
     } else {
-         {global.namadepan = this.getnamadepan()}
-         {global.namabelakang = this.getnamabelakang()}
-         {global.avatar = this.getavatar()}
-         {global.id = this.getid()}
-      return  (
-        
+      { global.namadepan = this.getnamadepan() }
+      { global.namabelakang = this.getnamabelakang() }
+      { global.avatar = this.getavatar() }
+      { global.id = this.getid() }
+      return (
         <NavigationContainer>
-          {/* {console.log(this.state.data)} */}
           <Drawer.Navigator initialRouteName=" "
             screenOptions={({ route }) => ({
               drawerIcon: ({ focused }) => {
@@ -194,11 +169,10 @@ export default class App extends Component {
               tabBarInactiveTintColor: 'gray',
             })}
             drawerContent={props => <CustomDrawerContent {...props} />}
-              >
-            
-            <Drawer.Screen name="Home"
+          >
+            <Drawer.Screen
+              name="Home"
               component={this.TabNav}
-
               options={{
                 headerShown: true,
                 headerTitle: 'Daily Meme Digest',
@@ -206,7 +180,6 @@ export default class App extends Component {
                   backgroundColor: '#917f54',
                 },
                 headerTintColor: '#fff',
-                // drawerItemStyle: { height: 0 }
                 drawerIcon: ({ focused, size }) => (
                   <Ionicons
                     name="home"
@@ -249,15 +222,12 @@ export default class App extends Component {
               }}
             />
           </Drawer.Navigator>
-
         </NavigationContainer >
       )
     }
   }
 
 }
-
-
 
 const doLogout = async () => {
   try {
@@ -285,7 +255,6 @@ function CustomDrawerContent(props) {
                 global.avatar,
             }}
           />
-
           <Text style={style.text_drawer_header}>
             <Avatar rounded size={'large'} source={{ uri: global.avatar }} />{'\n'}
             <Text style={{
@@ -320,7 +289,7 @@ function NavMeme() {
     <Stack.Navigator>
       <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
       <Stack.Screen name="Create Your Meme" component={NewMeme} />
-      <Stack.Screen name="Meme Detail" component={Detail}/>
+      <Stack.Screen name="Meme Detail" component={Detail} />
     </Stack.Navigator>
   );
 }
@@ -329,7 +298,7 @@ function NavMeme2() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="My Creation" component={MyCreation} options={{ headerShown: false }} />
-      <Stack.Screen name="Meme Detail" component={Detail}/>
+      <Stack.Screen name="Meme Detail" component={Detail} />
     </Stack.Navigator>
   );
 }
